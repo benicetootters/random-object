@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta http-equiv="refresh" content="30; url=https://artmuseum.bowdoin.edu/ro2.html" /> 
+	<meta charset="UTF-8">
+	<meta name="robots" content="noindex, nofollow" />
+	<meta content="width=device-width,user-scalable=NO" name="viewport"/>
+
+	<title>Random Object Generator</title>
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet" type="text/css"></link>
+
+
+<script type="text/javascript">
+
+// low represents the lowest record ID in your set. High is the highest. These can change of course so they might require som
+// occassional updates (more records added).  Record IDs are viewable in the kiosk as [your kiosk url]/objects-1/info/[record id]
+
+var low = 1;
+var high = 47200;
+
+$(document).ready(function() {
+	// acquire the dimensions of your display and set slide appropriately
+	var w = Math.round(($(window).width()*.95)/2);
+	var h = Math.round(($(window).height()*.88));
+			
+	// we pass an iteration param to tell us to not endlessly loop looking for viable objects (max 30 tries)
+	var params = new URL(document.location.toString()).searchParams;
+	var i = params.get("i");
+	if(isNaN(parseInt(i))) {
+		i = 0;
+	} else {
+		i = parseInt(i)+1;
+	}
+	
+	// randomly select a number between high and low
+	var seed = (low + Math.round((4*high * Math.random()))) % high;
+
+	// AJAX call to Kiosk's XML Data Sharing template (brief.html) querying the random integer between low and high
+	// that was generated.
+	$.ajax({
+		type: "GET",
+		url: "/results.html?layout=brief&format=html&maximumRecords=1&recordType=objects_1&query=_ID="+seed,
+		dataType: "html",
+
+		error: function (e) {
+			console.log("XML reading Failed: ", e);
+		},
+
+		success: function (response) {
+			var objs = $(response).find("div[class='objectdata']");
+			var hasi = $(objs[0]).find("div#imgbox img").length;
+			
+			// if kiosk failed to return an object (perhaps an unused record id) or if the object lacks an image
+			// reload the page with the iterated attempt tracking. To prevent a potentional endless loop, the script will stop trying 
+			// after 30 iterations. The page will then fall back to the regular reload in the meta-refresh
+			if(hasi < 1 ) {
+				if(i < 30) {
+					window.location.href="ro2.html?i="+i;
+				} 
+			} else {
+				// loads the HTML from the brief.html template call into the defined DIV element
+				$("#holder").html( $(objs[0]).html());
+			}
+					
+		}
+	});
+
+});
+</script>
+<style>
+
+	body {text-align:center;background-color:#555;}
+	div#holder {width:95%;margin:2rem auto;background-color:#fff;}
+	div#imgbox {vertical-align:top;display:inline-block;width:65%;}
+	#imgbox img {max-width:100%;}
+	dl.tstone {
+				display:inline-block;vertical-align:top;width:30%;padding:.4rem;box-sizing: border-box; 
+				font-family: 'Open Sans', sans-serif;
+				text-align:left;border:0px solid green;
+			}
+</style>
+		
+</head>
+<body>
+<div id="holder">
+	<div id="viewer">
+		<img id="art" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII=" />
+		<div id="ts">
+	</div>
+</body>
+</html>
