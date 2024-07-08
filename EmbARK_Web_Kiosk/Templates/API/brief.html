@@ -1,0 +1,27 @@
+<div id="lst">
+<!--#4DLOOP [Objects_1]-->
+	<div class="objectdata">
+		<div id="imgbox">
+			 <!--#4DSCRIPT/LoadRelatedRecords/Objects_1:Surrogates--><!--#4DLOOP [Surrogates]-->
+			 <!--#4Dif ([Surrogates]IsPrimary)-->
+			<img src="https://artmuseum.bowdoin.edu<!--#4DTEXT ImagePath("Surrogates")-->" />
+			<!--#4Dendif-->
+			<!--#4DENDLOOP-->
+		</div>
+		<dl class="tstone">			
+			<dt>Title</dt><dd class="title"><!--#4DVAR [Objects_1]Disp_Title--></dd>
+			<dt>Artist</dt><dd><!--#4Dtext [Objects_1]Disp_Maker_1--></dd>
+			<dt>Creation Place</dt><dd><!--#4Dtext gsFunc_Concat(", "; [Objects_1]Creation_Place1; [Objects_1]Creation_Place2; [Objects_1]Creation_Place3)--></dd>
+			<dt>Creation Date</dt><dd><!--#4DVAR [Objects_1]Disp_Create_DT--></dd>
+			<dt>Class System</dt><dd><!--#4DVAR [Objects_1]Class_System--></dd>
+			<dt>Media &amp; Support</dt><dd><!--#4DVAR [Objects_1]Disp_Medium--></dd>
+			<!--#4Dif ([Objects_1]Disp_Obj_Type # "")-->
+			<dt>Object Type</dt><dd><!--#4DVAR [Objects_1]Disp_Obj_Type--></dd>
+			<!--#4Dendif-->
+			<dt>Dimensions</dt><dd><!--#4DVAR [Objects_1]Disp_Dimen--></dd>
+			<dt>Copyright</dt><dd><!--#4DVAR [Objects_1]Copyright_Type--></dd>
+			<dt>Credit Line</dt><dd><!--#4Dtext [Objects_1]Dedication--></dd>
+		</dl>
+	</div>
+<!--#4DENDLOOP-->
+</div>
