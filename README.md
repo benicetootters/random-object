@@ -12,5 +12,5 @@ brief.html (line 7 before &lt;!--#4DTEXT ImagePath("Surrogates")--&gt;" )
 
 random.html (line 4 after url=)
 
-
+When configured, you should be able to go to your kiosk and bring up the random.html page to start seeing images. (E.g., https://collection.mymuseum.org/random.html) 
 
